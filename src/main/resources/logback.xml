@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Reference Manual http://logback.qos.ch/manual/index.html -->
+
+<configuration>
+	<contextName>demo</contextName>
+	<jmxConfigurator />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are  by default assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="perf4jFileAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/perf4j.log</File>
+        <encoder>
+            <Pattern>%date %-5level [%thread] %logger{36} %msg%n
+            </Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/perf4j.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="graphsFileAppender" class="ch.qos.logback.core.FileAppender">
+        <File>logs/perfGraphs.log</File>
+        <encoder>
+            <Pattern>%msg%n</Pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="graphExecutionTimes"
+              class="org.perf4j.logback.GraphingStatisticsAppender">
+        <!-- Possible GraphTypes are Mean, Min, Max, StdDev, Count and TPS -->
+        <param name="GraphType" value="Mean"/>
+        <!-- The tags of the timed execution blocks to graph are specified here -->
+        <param name="TagNamesToGraph" value="savePojo,deletePojo,getPojo"/>
+        <appender-ref ref="graphsFileAppender"/>
+    </appender>
+
+    <appender name="graphExecutionTPS"
+              class="org.perf4j.logback.GraphingStatisticsAppender">
+        <param name="GraphType" value="TPS"/>
+        <param name="TagNamesToGraph" value="savePojo,deletePojo,getPojo"/>
+        <appender-ref ref="graphsFileAppender"/>
+    </appender>
+
+
+
+    <appender name="CoalescingStatistics"
+              class="org.perf4j.logback.AsyncCoalescingStatisticsAppender">
+        <param name="TimeSlice" value="1000" />
+        <appender-ref ref="perf4jFileAppender" />
+        <appender-ref ref="graphExecutionTimes"/>
+        <appender-ref ref="graphExecutionTPS"/>
+    </appender>
+
+
+    <!-- Loggers -->
+    <!-- The Perf4J logger. Note that org.perf4j.TimingLogger is the value of
+        the org.perf4j.StopWatch.DEFAULT_LOGGER_NAME constant. Also, note that additivity
+        is set to false, which is usually what is desired - this means that timing
+        statements will only be sent to this logger and NOT to upstream loggers. -->
+    <logger name="org.perf4j.TimingLogger" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="CoalescingStatistics" />
+        <appender-ref ref="perf4jFileAppender" />
+
+    </logger>
+
+
+
+	<logger name="org.hibernate" level="WARN" />
+	<logger name="org.springframework" level="WARN" />
+	<logger name="org.apache" level="WARN" />
+
+	<logger name="jdbc.sqlonly" level="OFF" />
+	<logger name="jdbc.audit" level="OFF" />
+	<logger name="jdbc.sqltiming" level="OFF" />
+	<logger name="jdbc.connection" level="OFF" />
+	<logger name="jdbc.resultset" level="OFF" />
+	<root level="INFO">
+        <appender-ref ref="STDOUT"/>
+	</root>
+</configuration>
