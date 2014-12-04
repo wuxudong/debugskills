@@ -14,10 +14,10 @@ debugskills
     refer:  jmxterm -> http://wiki.cyclopsgroup.org/jmxterm/
 
 3. with jmxterm & log4jdbc, we can turn on sql audit at any time.
-    a. add log4jdbc4 dependency in your pom.xml
-    b. update jdbc url to jdbc:log4jdbc:mysql://[host]/[db name]/[xxxxx]
-    c. update driver class name to net.sf.log4jdbc.DriverSpy
-    d. add <logger name="jdbc.sqltiming" level="OFF" /> in your logback.xml
+      a. add log4jdbc4 dependency in your pom.xml
+      b. update jdbc url to jdbc:log4jdbc:mysql://[host]/[db name]/[xxxxx]
+      c. update driver class name to net.sf.log4jdbc.DriverSpy
+      d. add <logger name="jdbc.sqltiming" level="OFF" /> in your logback.xml
     
     call following command in jmxterm when you want to time sql execution.
       >> run setLoggerLevel jdbc.sqltiming DEBUG
