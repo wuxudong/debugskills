@@ -40,11 +40,10 @@
         </dependency>
 
         <dependency>
-            <groupId>log4jdbc4</groupId>
-            <artifactId>log4jdbc4</artifactId>
+            <groupId>com.googlecode.log4jdbc</groupId>
+            <artifactId>log4jdbc</artifactId>
             <version>1.2</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -157,7 +156,6 @@
             <version>1.1.3</version>
         </dependency>
         <!-- weaver for perf4j end-->
-
 
 
     </dependencies>
