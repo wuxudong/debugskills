@@ -92,14 +92,14 @@
 
 
     <logger name="org.hibernate" level="WARN"/>
-    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework" level="DEBUG"/>
     <logger name="org.apache" level="WARN"/>
 
     <logger name="log4jdbc.dump" level="WARN" />
     <logger name="jdbc.sqlonly" level="OFF"/>
     <logger name="jdbc.audit" level="OFF"/>
     <logger name="jdbc.sqltiming">
-        <level value="OFF"/>
+        <level value="DEBUG"/>
         <appender-ref ref="sqlAuditorFileAppender"/>
     </logger>
 

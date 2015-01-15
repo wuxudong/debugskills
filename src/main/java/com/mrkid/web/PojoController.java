@@ -4,8 +4,14 @@ import com.mrkid.entity.Pojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import com.mrkid.service.PojoService;
+
+import javax.validation.Valid;
 
 /**
  * User: xudong
@@ -20,19 +26,18 @@ public class PojoController {
 
     @RequestMapping(value = "/pojo", method = RequestMethod.POST)
     @ResponseBody
-    public RestResponse newPojo(@RequestParam("name") String name) {
-        Pojo pojo = new Pojo();
-        pojo.setName(name);
+    public RestResponse newPojo(@Valid Pojo pojo) {
         pojoService.save(pojo);
+        System.out.println(pojo);
         return new RestResponse();
     }
 
+
     @RequestMapping(value = "/pojo/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public RestResponse updatePojo(@PathVariable("id") Long id, @RequestBody MultiValueMap<String,String> body) {
-        Pojo pojo = new Pojo();
+    public RestResponse updatePojo(@PathVariable("id") Long id, @RequestBody Pojo pojo) {
         pojo.setId(id);
-        pojo.setName(body.getFirst("name"));
+
         pojoService.save(pojo);
         return new RestResponse();
     }

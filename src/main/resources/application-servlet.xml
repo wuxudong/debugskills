@@ -5,7 +5,40 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="classpath:/validate" />
+    </bean>
+
+    <bean id="compositeExceptionResolver"
+          class="org.springframework.web.servlet.handler.HandlerExceptionResolverComposite">
+        <property name="order" value="0" />
+        <property name="exceptionResolvers">
+            <list>
+                <ref bean="exceptionHandlerExceptionResolver" />
+                <ref bean="restExceptionResolver" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="restExceptionResolver"
+          class="cz.jirutka.spring.exhandler.RestHandlerExceptionResolverFactoryBean">
+        <property name="defaultContentType" value="application/json" />
+
+    </bean>
+
+    <bean id="exceptionHandlerExceptionResolver"
+          class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" />
+
+    <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" />
+
     <context:component-scan base-package="com.mrkid.web" />
     <mvc:annotation-driven />
     <mvc:default-servlet-handler />
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
 </beans>

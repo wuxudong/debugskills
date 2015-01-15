@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 /**
  * User: xudong
@@ -14,7 +16,11 @@ import javax.persistence.Id;
 public class Pojo {
     private Long id;
 
+//    @NotNull
     private String name;
+
+//    @Max(100)
+    private long value;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +38,14 @@ public class Pojo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getValue() {
+        return value;
+    }
+
+    public void setValue(long value) {
+        this.value = value;
     }
 
     @Override
